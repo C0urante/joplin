@@ -108,7 +108,7 @@ public class Demo {
 
 ```shell
 # Build the library, skip tests, and install to your local Maven repository
-mvn clean install
+mvn clean install -DskipTests
 ```
 
 ## Testing
