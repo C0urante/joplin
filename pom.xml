@@ -21,7 +21,7 @@
 
   <groupId>io.github.c0urante</groupId>
   <artifactId>joplin</artifactId>
-  <version>0.2.0</version>
+  <version>0.3.0-SNAPSHOT</version>
 
   <name>Joplin</name>
   <description>Java client for the Philips Hue Entertainment API</description>
@@ -46,7 +46,7 @@
     <connection>scm:git:git://github.com/C0urante/joplin.git</connection>
     <developerConnection>scm:git:git@github.com:C0urante/joplin.git</developerConnection>
     <url>https://github.com/C0urante/joplin/tree/main</url>
-    <tag>v0.2.0</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <repositories>
