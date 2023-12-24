@@ -69,14 +69,14 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.11</maven.compiler.source>
-    <maven.compiler.target>1.11</maven.compiler.target>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
 
     <clean.plugin.version>3.1.0</clean.plugin.version>
     <compiler.plugin.version>3.12.0</compiler.plugin.version>
     <failsafe.plugin.version>3.2.2</failsafe.plugin.version>
     <gpg.plugin.version>3.0.1</gpg.plugin.version>
-    <javadoc.plugin.version>2.9.1</javadoc.plugin.version>
+    <javadoc.plugin.version>3.6.3</javadoc.plugin.version>
     <license.plugin.version>4.1</license.plugin.version>
     <nexus.plugin.version>1.6.7</nexus.plugin.version>
     <release.plugin.version>3.0.1</release.plugin.version>
