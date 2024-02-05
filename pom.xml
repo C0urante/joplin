@@ -246,6 +246,8 @@
               <goal>verify</goal>
             </goals>
             <configuration>
+              <!-- Disable forking new JVMs in order to read from stdin -->
+              <forkCount>0</forkCount>
               <includes>
                 <includes>**/*</includes>
               </includes>
