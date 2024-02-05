@@ -32,7 +32,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +48,6 @@ import java.util.stream.IntStream;
 public class HueEntertainmentClient implements AutoCloseable {
 
   private static final Duration REST_CONNECT_TIMEOUT = Duration.ofSeconds(5);
-  private static final int TRIES = 3;
 
   private final TlsPSKIdentity pskIdentity;
   private final String host;
@@ -57,6 +55,7 @@ public class HueEntertainmentClient implements AutoCloseable {
   private final String username;
   private final byte colorSpace;
   private final byte[] entertainmentArea;
+  private final int tries;
   private final URI baseUri;
   private final HttpClient httpClient;
 
@@ -69,7 +68,8 @@ public class HueEntertainmentClient implements AutoCloseable {
       String username,
       String clientKey,
       int colorSpace,
-      String entertainmentArea
+      String entertainmentArea,
+      int tries
   ) {
     Objects.requireNonNull(host, "Host name / IP address must be set");
     Objects.requireNonNull(username, "Username must be set");
@@ -82,6 +82,7 @@ public class HueEntertainmentClient implements AutoCloseable {
     this.username = username;
     this.colorSpace = Validation.colorSpace(colorSpace);
     this.entertainmentArea = Validation.entertainmentArea(entertainmentArea);
+    this.tries = Validation.tries(tries);
 
     this.httpClient = HttpClient.newBuilder()
         .sslContext(InsecureSslContextFactory.context())
@@ -111,6 +112,7 @@ public class HueEntertainmentClient implements AutoCloseable {
 
     public static final int DEFAULT_PORT = 2100;
     public static final int DEFAULT_COLOR_SPACE = HueColor.COLOR_SPACE_RGB;
+    public static final int DEFAULT_TRIES = 3;
 
     private String host = null;
     private int port = DEFAULT_PORT;
@@ -118,6 +120,7 @@ public class HueEntertainmentClient implements AutoCloseable {
     private String clientKey = null;
     private int colorSpace = DEFAULT_COLOR_SPACE;
     private String entertainmentArea = null;
+    private int tries = DEFAULT_TRIES;
 
     private Builder() {
     }
@@ -153,6 +156,11 @@ public class HueEntertainmentClient implements AutoCloseable {
       return this;
     }
 
+    public Builder tries(int tries) {
+      this.tries = tries;
+      return this;
+    }
+
     public HueEntertainmentClient build() {
       return new HueEntertainmentClient(
           host,
@@ -160,7 +168,8 @@ public class HueEntertainmentClient implements AutoCloseable {
           username,
           clientKey,
           colorSpace,
-          entertainmentArea
+          entertainmentArea,
+          tries
       );
     }
 
@@ -274,8 +283,7 @@ public class HueEntertainmentClient implements AutoCloseable {
     );
 
     // UDP, baby
-    // TODO: Configurable?
-    for (int i = 0; i < TRIES; i++) {
+    for (int i = 0; i < tries; i++) {
       dtlsClient.send(serialized);
     }
   }

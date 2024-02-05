@@ -57,6 +57,17 @@ public class Validation {
       );
   }
 
+  public static int tries(int value) {
+    if (value <= 0) {
+      throw new IllegalArgumentException(
+          "Invalid value " + value
+              + " for tries; "
+              + "must positive"
+      );
+    }
+    return value;
+  }
+
   public static byte colorSpace(int colorSpace) {
     if (colorSpace < 0 || colorSpace > 255)
       throw new IllegalArgumentException(

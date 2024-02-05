@@ -35,15 +35,23 @@ public class HueEntertainmentClientTest {
 
   @Test
   public void testRapidAlternation() throws Exception {
-    testAlternation(50);
+    // Test with the default number of tries first
+    testAlternation(3, 50);
+    Thread.sleep(1_000);
+    // Then test with the lowest-possible number of tries
+    testAlternation(1, 50);
   }
 
   @Test
   public void testAlternation() throws Exception {
-    testAlternation(100);
+    // Test with the default number of tries first
+    testAlternation(3, 100);
+    Thread.sleep(1_000);
+    // Then test with the lowest-possible number of tries
+    testAlternation(1, 100);
   }
 
-  private void testAlternation(long sleepMs) throws Exception {
+  private void testAlternation(int tries, long sleepMs) throws Exception {
     try (HueEntertainmentClient client = createClient()) {
       client.initializeStream();
       for (int i = 0; i <= 100; i++) {
@@ -112,6 +120,10 @@ public class HueEntertainmentClientTest {
   }
 
   private static HueEntertainmentClient createClient() throws IOException {
+    return createClient(3);
+  }
+
+    private static HueEntertainmentClient createClient(int tries) throws IOException {
     ClassLoader classloader = Thread.currentThread().getContextClassLoader();
     try (InputStream lightsFile = classloader.getResourceAsStream(TEST_CONFIG_FILE)) {
       Properties lightsProperties = new Properties();
