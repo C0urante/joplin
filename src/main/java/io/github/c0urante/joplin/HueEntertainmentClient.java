@@ -192,9 +192,7 @@ public class HueEntertainmentClient implements AutoCloseable {
       httpThread = Thread.currentThread();
     }
 
-    startEntertainment();
-    // TODO: May need to wait for the stream to become active before trying
-    //       to initialize DTLS client
+    sendEntertainmentConfigurationRequest(true);
 
     synchronized (this) {
       httpThread = null;
@@ -293,11 +291,12 @@ public class HueEntertainmentClient implements AutoCloseable {
    * in-progress requests.
    */
   @Override
-  public void close() throws IOException {
+  public void close() throws IOException, InterruptedException {
     synchronized (this) {
       if (httpThread != null) {
         httpThread.interrupt();
         httpThread = null;
+        sendEntertainmentConfigurationRequest(false);
       }
     }
 
@@ -321,11 +320,12 @@ public class HueEntertainmentClient implements AutoCloseable {
     return result;
   }
 
-  private void startEntertainment()  throws IOException, InterruptedException {
+  private void sendEntertainmentConfigurationRequest(boolean start) throws IOException, InterruptedException {
     ObjectMapper objectMapper = new ObjectMapper();
 
     Map<String, String> requestBody = new HashMap<>();
-    requestBody.put("action", "start");
+    String action = start ? "start" : "stop";
+    requestBody.put("action", action);
     String serializedRequestBody = objectMapper.writeValueAsString(requestBody);
 
     String entertainmentAreaString = new String(
